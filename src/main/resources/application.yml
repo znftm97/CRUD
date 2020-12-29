@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/C:\spring\CRUD\crud
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        #show_sql: true 이건 콘솔에 로그를 찍음
+        #쿼리 이쁘게 나옴
+        format_sql: true
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 2000
+
+logging.level:
+  #콘솔이 아니라 로그파일로 남김
+  org.hibernate.SQL: debug
+  #파라미터 까지 볼 수 있음
+  #org.hibernate.type: trace
