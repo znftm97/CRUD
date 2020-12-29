@@ -1,14 +1,13 @@
-package crud.noticeboard;
+package crud.noticeboard.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class testController {
+public class homeController {
 
     @GetMapping("/")
     public String home(){
-        return "/test";
+        return "/home";
     }
-
 }
