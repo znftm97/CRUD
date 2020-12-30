@@ -7,8 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,14 +23,18 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/members/new")
-    public String createMember(){
+    public String createMember(Model model){
+        model.addAttribute("MemberDto", new MemberDto());
         return "/createMember";
     }
 
     @PostMapping("/members/new")
-    public String create(MemberDto memberDto){
+    public String create(@ModelAttribute("MemberDto") @Valid MemberDto memberDto, BindingResult result){
 
-        System.out.println("=====================");
+        if(result.hasErrors()){
+            return "/createMember";
+        }
+
         ModelMapper modelMapper = new ModelMapper();
         Member member = modelMapper.map(memberDto, Member.class);
 
