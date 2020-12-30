@@ -29,5 +29,7 @@ public class Post {
     @NotEmpty(message = "필수로 입력해야 합니다.")
     private String content;
 
+    private int count; // 조회수
+
     private LocalDateTime postDate;
 }

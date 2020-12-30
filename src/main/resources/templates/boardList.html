@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <!--<div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>글쓴이</th>
+                <th>제목</th>
+                <th>작성시간</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${posts}">
+                <td th:text="${post.id}"></td>
+                <td th:text="${post.member.name}"></td>
+                <td th:text="${post.title}"></td>
+                <td th:text="${post.postDate}"></td>
+                <td th:text="${post.count}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <nav style="text-align: center;">
+            <ul class="pagination justify-content-center"
+                th:with="start=${T(Math).floor(posts.number/10)*10 + 1},
+                    last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages})">
+
+                &lt;!&ndash;  first  &ndash;&gt;
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/posts(page=0)}" aria-label="First">
+                        <span aria-hidden="true">First</span>
+                    </a>
+                </li>
+
+                &lt;!&ndash;  <  &ndash;&gt;
+                <li class="page-item">
+                    <a class="page-link" th:href="${posts.first} ? '#' :@{/posts(page=${posts.number - 1})}" aria-label="Previous" >
+                        <span aria-hidden="true">&lt;</span>
+                    </a>
+                </li>
+
+                &lt;!&ndash;  1,2,3  &ndash;&gt;
+                <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == posts.number + 1} ? 'page-item active'">
+                    <a class="page-link" th:text="${page}" th:href="@{/posts(page=${page - 1})}"></a>
+                </li>
+
+                &lt;!&ndash;  > &ndash;&gt;
+                <li class="page-item" th:class="${posts.last} ? 'disabled'">
+                    <a class="page-link" th:href="${posts.last} ? '#' : @{/posts(page=${posts.number + 1})}" aria-label="Next">
+                        <span aria-hidden="true">&gt;</span>
+                    </a>
+                </li>
+
+                &lt;!&ndash;  Last  &ndash;&gt;
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/posts(page=${posts.totalPages - 1})}" aria-label="Last">
+                        <span aria-hidden="true">Last</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>-->
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>
