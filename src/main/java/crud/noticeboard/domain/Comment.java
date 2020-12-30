@@ -19,7 +19,6 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @NotEmpty(message = "필수로 입력해야 합니다.")
     private String text;
 
     private LocalDateTime commentDate;

@@ -23,10 +23,8 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Comment> comment;
 
-    @NotEmpty(message = "필수로 입력해야 합니다.")
     private String title;
 
-    @NotEmpty(message = "필수로 입력해야 합니다.")
     private String content;
 
     private int count; // 조회수
