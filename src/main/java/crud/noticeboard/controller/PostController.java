@@ -92,4 +92,11 @@ public class PostController {
         return "redirect:/postList";
 
     }
+
+    //글 삭제
+    @PostMapping("/post/{postId}/remove")
+    public String removePost(@PathVariable("postId") Long postId){
+        postService.removePost(postId);
+        return "redirect:/postList";
+    }
 }

@@ -29,9 +29,9 @@
             </table>-->
         </div>
 
-        <div class="form-row float-right">
-            <a class="btn btn-danger" th:href="@{/post/{postId}/remove (postId=${post.id})}">삭제</a>
-        </div>
+        <form class="form-row float-right" th:action="@{/post/{postId}/remove (postId=${post.id})}" method="post">
+            <button class="btn btn-danger">삭제</button>
+        </form>
         <div class="form-row float-right">
             <a class="btn btn-primary" th:href="@{/post/{postId}/update (postId=${post.id})}" style="margin-right: 10px;">수정</a>
         </div>

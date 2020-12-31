@@ -8,4 +8,5 @@ public interface PostService {
     void createPost(String title, String content);
     void addCount(Post post);
     void updatePost(Long postId, PostCreateDto postCreateDto);
+    void removePost(Long postId);
 }
