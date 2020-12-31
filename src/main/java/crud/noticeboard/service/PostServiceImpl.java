@@ -2,6 +2,7 @@ package crud.noticeboard.service;
 
 import crud.noticeboard.domain.Member;
 import crud.noticeboard.domain.Post;
+import crud.noticeboard.dto.PostCreateDto;
 import crud.noticeboard.repository.MemberRepository;
 import crud.noticeboard.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +40,14 @@ public class PostServiceImpl implements PostService{
     @Override
     public void addCount(Post post) {
         post.addCount();
+    }
+
+    @Transactional
+    @Override
+    public void updatePost(Long postId, PostCreateDto postCreateDto) {
+        Post findPost = postRepository.findByIdCustom(postId);
+        findPost.setTitle(postCreateDto.getTitle());
+        findPost.setContent(postCreateDto.getContent());
+        findPost.setPostDate(LocalDateTime.now());
     }
 }

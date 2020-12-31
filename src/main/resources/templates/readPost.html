@@ -30,10 +30,10 @@
         </div>
 
         <div class="form-row float-right">
-            <a class="btn btn-danger" href="">삭제</a>
+            <a class="btn btn-danger" th:href="@{/post/{postId}/remove (postId=${post.id})}">삭제</a>
         </div>
         <div class="form-row float-right">
-            <a class="btn btn-primary" href="" style="margin-right: 10px;">수정</a>
+            <a class="btn btn-primary" th:href="@{/post/{postId}/update (postId=${post.id})}" style="margin-right: 10px;">수정</a>
         </div>
 
 
