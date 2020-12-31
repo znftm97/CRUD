@@ -49,8 +49,8 @@ public class Post {
     }
 
     //==비즈니스 로직==//
-    public void countAdd(){
-        this.count = this.count++;
+    public void addCount(){
+        this.count++;
     }
 }
 

@@ -32,4 +32,10 @@ public class PostServiceImpl implements PostService{
 
         postRepository.save(post);
     }
+
+    @Transactional
+    @Override
+    public void addCount(Post post) {
+        post.addCount();
+    }
 }

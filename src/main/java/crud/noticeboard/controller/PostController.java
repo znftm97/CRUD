@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -59,6 +58,8 @@ public class PostController {
     @GetMapping("/post/{postId}/read")
     public String postRead(@PathVariable("postId") Long postId, Model model){
         Post findPost = postRepository.findByIdCustom(postId);
+        postService.addCount(findPost);
+
         model.addAttribute("post", findPost);
         return "/readPost";
 
