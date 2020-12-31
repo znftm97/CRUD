@@ -20,7 +20,9 @@
             <tr th:each="post : ${posts}">
                 <td th:text="${post.id}"></td>
                 <td th:text="${post.member.name}"></td>
-                <td th:text="${post.title}"></td>
+                <td>
+                    <a th:text="${post.title}" th:href="@{/post/{postId}/read (postId=${post.id})}" style="cursor: pointer; font-weight: bold"></a>
+                </td>
                 <td th:text="${post.postDate}"></td>
                 <td th:text="${post.count}"></td>
             </tr>

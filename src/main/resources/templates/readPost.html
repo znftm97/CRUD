@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <div>
+        <div>
+            <strong th:text="${post.title}" style="font-size: 30px"></strong>
+            <p> </p>
+            <div>
+                <span>글쓴이 : </span>
+                <span th:text="${post.member.name}"></span>
+                <span>, 조회수 : </span>
+                <span th:text="${post.count}"></span>
+                <span>, 작성시간 : </span>
+                <span th:text="${post.postDate}"></span>
+            </div>
+        </div>
+        <div>
+            <p>----------------------------------------------------------------------------</p>
+            <p> </p>
+            <p th:text="${post.content}"></p>
+            <!--<table>
+                <tbody th:each="">
+                    <tr></tr>
+                </tbody>
+            </table>-->
+        </div>
+
+        <div class="form-row float-right">
+            <a class="btn btn-danger" href="">삭제</a>
+        </div>
+        <div class="form-row float-right">
+            <a class="btn btn-primary" href="" style="margin-right: 10px;">수정</a>
+        </div>
+
+
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>
