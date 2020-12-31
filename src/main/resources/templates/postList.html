@@ -5,7 +5,7 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
 
-    <!--<div>
+    <div>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -27,47 +27,51 @@
             </tbody>
         </table>
 
+        <div class="form-row float-right">
+            <a class="btn btn-lg btn-primary" href="/posts/new">글쓰기</a>
+        </div>
+
         <nav style="text-align: center;">
             <ul class="pagination justify-content-center"
                 th:with="start=${T(Math).floor(posts.number/10)*10 + 1},
                     last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages})">
 
-                &lt;!&ndash;  first  &ndash;&gt;
+                <!--  first  -->
                 <li class="page-item">
-                    <a class="page-link" th:href="@{/posts(page=0)}" aria-label="First">
+                    <a class="page-link" th:href="@{/postList(page=0)}" aria-label="First">
                         <span aria-hidden="true">First</span>
                     </a>
                 </li>
 
-                &lt;!&ndash;  <  &ndash;&gt;
+                <!--  <  -->
                 <li class="page-item">
-                    <a class="page-link" th:href="${posts.first} ? '#' :@{/posts(page=${posts.number - 1})}" aria-label="Previous" >
+                    <a class="page-link" th:href="${posts.first} ? '#' :@{/postList(page=${posts.number - 1})}" aria-label="Previous" >
                         <span aria-hidden="true">&lt;</span>
                     </a>
                 </li>
 
-                &lt;!&ndash;  1,2,3  &ndash;&gt;
+                <!--  1,2,3  -->
                 <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == posts.number + 1} ? 'page-item active'">
-                    <a class="page-link" th:text="${page}" th:href="@{/posts(page=${page - 1})}"></a>
+                    <a class="page-link" th:text="${page}" th:href="@{/postList(page=${page - 1})}"></a>
                 </li>
 
-                &lt;!&ndash;  > &ndash;&gt;
+                <!--  > -->
                 <li class="page-item" th:class="${posts.last} ? 'disabled'">
-                    <a class="page-link" th:href="${posts.last} ? '#' : @{/posts(page=${posts.number + 1})}" aria-label="Next">
+                    <a class="page-link" th:href="${posts.last} ? '#' : @{/postList(page=${posts.number + 1})}" aria-label="Next">
                         <span aria-hidden="true">&gt;</span>
                     </a>
                 </li>
 
-                &lt;!&ndash;  Last  &ndash;&gt;
+                <!--  Last  -->
                 <li class="page-item">
-                    <a class="page-link" th:href="@{/posts(page=${posts.totalPages - 1})}" aria-label="Last">
+                    <a class="page-link" th:href="@{/postList(page=${posts.totalPages - 1})}" aria-label="Last">
                         <span aria-hidden="true">Last</span>
                     </a>
                 </li>
             </ul>
         </nav>
 
-    </div>-->
+    </div>
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
 </body>

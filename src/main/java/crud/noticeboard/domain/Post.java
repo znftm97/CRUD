@@ -30,4 +30,27 @@ public class Post {
     private int count; // 조회수
 
     private LocalDateTime postDate;
+
+    //== 연관관계 메서드 ==//
+    public void setMember(Member member){
+        this.member = member;
+        member.getPost().add(this);
+    }
+
+    //==생성 메서드==//
+    public static Post createPost(Member member, String title, String content){
+        Post post = new Post();
+        post.setMember(member);
+        post.setTitle(title);
+        post.setContent(content);
+        post.setPostDate(LocalDateTime.now());
+
+        return post;
+    }
+
+    //==비즈니스 로직==//
+    public void countAdd(){
+        this.count = this.count++;
+    }
 }
+

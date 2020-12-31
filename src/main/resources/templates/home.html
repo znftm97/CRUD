@@ -18,8 +18,9 @@
             <a class="btn btn-lg btn-dark" sec:authorize="isAuthenticated()" href="/logout">로그아웃</a>
         </p>
         <p>
-            <a class="btn btn-lg btn-info" href="/board">게시판</a>
+            <a class="btn btn-lg btn-info" href="/postList">게시판</a>
         </p>
+
 
     </div>
     <div th:replace="fragments/footer :: footer" />

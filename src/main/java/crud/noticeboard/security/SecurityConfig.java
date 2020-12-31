@@ -19,10 +19,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
+    /*@Bean
     public AuthenticationProvider authenticationProvider(){
         return new CustomAuthenticationProvider();
-    }
+    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -40,10 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Override
+    /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
-    }
+    }*/
 
     // 정적파일 보안필터 안거치게 설정
     @Override
