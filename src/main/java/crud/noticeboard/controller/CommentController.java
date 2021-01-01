@@ -53,4 +53,18 @@ public class CommentController {
     //댓글 수정
 
     //댓글 삭제
+    @PostMapping("/comment/{commentId}/{postId}/delete")
+    public String deleteComment(@PathVariable("commentId") Long commentId, @PathVariable("postId") Long postId){
+        Comment findComment = commentRepository.findByIdCustom(commentId);
+
+        Member loginMember = memberService.findLoginMember();
+
+        if( !((loginMember.getName()).equals(findComment.getMember().getName())) ){
+            return "error/errorDelete";
+        }
+
+        commentRepository.delete(findComment);
+
+        return "redirect:/post/{postId}/read";
+    }
 }

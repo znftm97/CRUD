@@ -38,12 +38,19 @@
                             <td th:text="${comment.member.name}" style="float: left"></td>
                             <td th:text="${comment.text}"></td>
                             <td th:text="${comment.commentDate}"></td>
-                            <td class="btn-danger" th:href="@{/comment/{commentId}/remove (commentId=${comment.id})}" style="float: right">삭제</td>
-                            <td class="btn-success" th:href="@{/comment/{commentId}/update (commentId=${comment.id})}" style="float: right">수정</td>
+                            <td style="float: right">
+                                <form role="form" th:action="@{/comment/{commentId}/{postId}/delete (commentId=${comment.id} ,postId=${post.id})}" method="post">
+                                    <button class="btn-danger" style="float: right">삭제</button>
+                                </form>
+                            </td>
+                            <td th:href="@{/comment/{commentId}/update (commentId=${comment.id})}" style="float: right">
+                                <button class="btn-success" style="margin-left: 20px">수정</button>
+                            </td>
                         </tr>
                     </tbody>
                  </table>
 
+                <!--페이징-->
                 <nav style="text-align: center;">
                     <ul class="pagination justify-content-center"
                         th:with="start=${T(Math).floor(comments.number/10)*10 + 1},

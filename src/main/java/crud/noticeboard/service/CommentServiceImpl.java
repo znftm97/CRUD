@@ -22,6 +22,7 @@ public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+    private final EntityManager em;
 
     @Transactional
     @Override
@@ -44,4 +45,5 @@ public class CommentServiceImpl implements CommentService{
     public void readComment() {
 
     }
+
 }
