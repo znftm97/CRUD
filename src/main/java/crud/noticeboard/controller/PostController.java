@@ -1,7 +1,11 @@
 package crud.noticeboard.controller;
 
+import crud.noticeboard.domain.Comment;
+import crud.noticeboard.domain.Member;
 import crud.noticeboard.domain.Post;
+import crud.noticeboard.dto.CommentDto;
 import crud.noticeboard.dto.PostCreateDto;
+import crud.noticeboard.repository.CommentRepository;
 import crud.noticeboard.repository.PostRepository;
 import crud.noticeboard.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,6 +30,7 @@ public class PostController {
 
     private final PostService postService;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     //글목록 페이지 매핑
     @GetMapping("/postList")
@@ -57,13 +63,22 @@ public class PostController {
 
     //글 읽기 페이지 매핑
     @GetMapping("/post/{postId}/read")
-    public String readPost(@PathVariable("postId") Long postId, Model model){
+    public String readPost(@PathVariable("postId") Long postId, Model model,
+                           @PageableDefault(size = 4, sort = "commentDate", direction = Sort.Direction.DESC) Pageable pageable){
+
+        //글 조회
         Post findPost = postRepository.findByIdCustom(postId);
+
+        //조회수 증가
         postService.addCount(findPost);
 
-        model.addAttribute("post", findPost);
-        return "/readPost";
+        //해당글에대한 댓글들 조회
+        List<Comment> comments = commentRepository.findByComment(postId);
 
+        model.addAttribute("post", findPost);
+        model.addAttribute("commentDto", new CommentDto());
+        model.addAttribute("comments", comments);
+        return "/readPost";
     }
 
     //글 수정 화면 매핑
@@ -89,7 +104,7 @@ public class PostController {
 
         postService.updatePost(postId, postCreateDto);
 
-        return "redirect:/postList";
+        return "redirect:/post/{postId}/read";
 
     }
 

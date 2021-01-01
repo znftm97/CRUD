@@ -19,6 +19,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Post> post;
 
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comment;
+
     private String name;
 
     private String password;

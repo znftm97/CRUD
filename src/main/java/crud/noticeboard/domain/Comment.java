@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,7 +18,33 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     private String text;
 
     private LocalDateTime commentDate;
+
+    //== 연관관계 메서드 ==//
+    public void setMember(Member member){
+        this.member = member;
+        member.getComment().add(this);
+    }
+
+    public void setPost(Post post){
+        this.post = post;
+        post.getComment().add(this);
+    }
+
+    //==생성 메서드==//
+    public static Comment createComment(Member member, Post post, String text){
+        Comment comment = new Comment();
+        comment.setMember(member);
+        comment.setPost(post);
+        comment.setText(text);
+        comment.setCommentDate(LocalDateTime.now());
+
+        return comment;
+    }
 }

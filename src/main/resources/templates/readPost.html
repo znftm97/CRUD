@@ -6,6 +6,7 @@
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
 
     <div>
+        <!--내용 헤더-->
         <div>
             <strong th:text="${post.title}" style="font-size: 30px"></strong>
             <p> </p>
@@ -18,22 +19,36 @@
                 <span th:text="${post.postDate}"></span>
             </div>
         </div>
+        <!--글 내용-->
         <div>
             <p>----------------------------------------------------------------------------</p>
             <p> </p>
             <p th:text="${post.content}"></p>
-            <!--<table>
-                <tbody th:each="">
-                    <tr></tr>
-                </tbody>
-            </table>-->
+
+            <!--댓글 박스-->
+            <div class="jumbotron" style="margin-top: 100px">
+                <form style="display: flex" role="form" th:action="@{/comment/{postId}/new (postId=${post.id})}" th:object="${commentDto}" method="post">
+                    <input type="text" th:field="*{text}" class="form-control" placeholder="내용을 입력하세요" style="height: 60px">
+                    <button type="submit" class="btn btn-sm btn-primary" >Submit</button>
+                </form>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr th:each="comment : ${comments}">
+                            <td th:text="${comment.member.name}" style="float: left"></td>
+                            <td th:text="${comment.text}"></td>
+                            <td th:text="${comment.commentDate}" style="right: 0"></td>
+                        </tr>
+                    </tbody>
+                 </table>
+            </div>
+
         </div>
 
         <form class="form-row float-right" th:action="@{/post/{postId}/remove (postId=${post.id})}" method="post">
             <button class="btn btn-danger">삭제</button>
         </form>
         <div class="form-row float-right">
-            <a class="btn btn-primary" th:href="@{/post/{postId}/update (postId=${post.id})}" style="margin-right: 10px;">수정</a>
+            <a class="btn btn-success" th:href="@{/post/{postId}/update (postId=${post.id})}" style="margin-right: 10px;">수정</a>
         </div>
 
 
