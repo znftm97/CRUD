@@ -31,15 +31,58 @@
                     <input type="text" th:field="*{text}" class="form-control" placeholder="내용을 입력하세요" style="height: 60px">
                     <button type="submit" class="btn btn-sm btn-primary" >Submit</button>
                 </form>
+
                 <table class="table table-striped">
                     <tbody>
                         <tr th:each="comment : ${comments}">
                             <td th:text="${comment.member.name}" style="float: left"></td>
                             <td th:text="${comment.text}"></td>
-                            <td th:text="${comment.commentDate}" style="right: 0"></td>
+                            <td th:text="${comment.commentDate}" style="float: right"></td>
                         </tr>
                     </tbody>
                  </table>
+
+                <nav style="text-align: center;">
+                    <ul class="pagination justify-content-center"
+                        th:with="start=${T(Math).floor(comments.number/10)*10 + 1},
+                            last=(${start + 9 < comments.totalPages ? start + 9 : comments.totalPages}),
+                            postId=${post.id}">
+
+                        <!--  first  -->
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/post/{postId}/read?(page=0) (postId=${post.id})}" aria-label="First">
+                                <span aria-hidden="true">First</span>
+                            </a>
+                        </li>
+
+                        <!--  <  -->
+                        <li class="page-item">
+                            <a class="page-link" th:href="${comments.first} ? '#' :@{/post/{postId}/read(page=${comments.number - 1}, (postId=${post.id}))}" aria-label="Previous" >
+                                <span aria-hidden="true">&lt;</span>
+                            </a>
+                        </li>
+
+                        <!--  1,2,3  -->
+                        <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == comments.number + 1} ? 'page-item active'">
+                            <a class="page-link" th:text="${page}" th:href="@{/post/{postId}/read(page=${page - 1}, (postId=${post.id}) )}"></a>
+                        </li>
+
+                        <!--  > -->
+                        <li class="page-item" th:class="${comments.last} ? 'disabled'">
+                            <a class="page-link" th:href="${comments.last} ? '#' : @{/post/{postId}/read(page=${comments.number + 1}, (postId=${post.id}))}" aria-label="Next">
+                                <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </li>
+
+                        <!--  Last  -->
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/post/{postId}/read(page=${comments.totalPages - 1}, (postId=${post.id}))}" aria-label="Last">
+                                <span aria-hidden="true">Last</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
             </div>
 
         </div>

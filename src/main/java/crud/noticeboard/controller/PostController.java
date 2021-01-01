@@ -1,7 +1,6 @@
 package crud.noticeboard.controller;
 
 import crud.noticeboard.domain.Comment;
-import crud.noticeboard.domain.Member;
 import crud.noticeboard.domain.Post;
 import crud.noticeboard.dto.CommentDto;
 import crud.noticeboard.dto.PostCreateDto;
@@ -10,19 +9,16 @@ import crud.noticeboard.repository.PostRepository;
 import crud.noticeboard.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,7 +30,7 @@ public class PostController {
 
     //글목록 페이지 매핑
     @GetMapping("/postList")
-    public String post(Model model, @PageableDefault(size = 2, sort = "postDate", direction = Sort.Direction.DESC) Pageable pageable){
+    public String post(Model model, @PageableDefault(size = 5, sort = "postDate", direction = Sort.Direction.DESC) Pageable pageable){
         Page<Post> posts = postRepository.findAll(pageable);
         model.addAttribute("posts", posts);
 
@@ -64,7 +60,7 @@ public class PostController {
     //글 읽기 페이지 매핑
     @GetMapping("/post/{postId}/read")
     public String readPost(@PathVariable("postId") Long postId, Model model,
-                           @PageableDefault(size = 4, sort = "commentDate", direction = Sort.Direction.DESC) Pageable pageable){
+                           @PageableDefault(size = 5, sort = "commentDate", direction = Sort.Direction.ASC) Pageable pageable){
 
         //글 조회
         Post findPost = postRepository.findByIdCustom(postId);
@@ -73,7 +69,8 @@ public class PostController {
         postService.addCount(findPost);
 
         //해당글에대한 댓글들 조회
-        List<Comment> comments = commentRepository.findByComment(postId);
+        Page<Comment> comments = commentRepository.findByComment(postId, pageable);
+
 
         model.addAttribute("post", findPost);
         model.addAttribute("commentDto", new CommentDto());
