@@ -2,10 +2,11 @@ package crud.noticeboard.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -20,16 +21,17 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<Comment> comment;
 
     private String title;
+
 
     private String content;
 
     private int count; // 조회수
 
-    private LocalDateTime postDate;
+    private String postDate;
 
     //== 연관관계 메서드 ==//
     public void setMember(Member member){
@@ -43,7 +45,9 @@ public class Post {
         post.setMember(member);
         post.setTitle(title);
         post.setContent(content);
-        post.setPostDate(LocalDateTime.now());
+
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm"));
+        post.setPostDate(date);
 
         return post;
     }

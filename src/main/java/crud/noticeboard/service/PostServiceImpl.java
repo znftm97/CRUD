@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class PostServiceImpl implements PostService{
     private final MemberRepository memberRepository;
     private final EntityManager em;
 
+    //글 생성
     @Transactional
     @Override
     public void createPost(String title, String content) {
@@ -38,37 +40,31 @@ public class PostServiceImpl implements PostService{
         postRepository.save(post);
     }
 
+    //조회수 증가
     @Transactional
     @Override
     public void addCount(Post post) {
         post.addCount();
     }
 
+    //글 수정
     @Transactional
     @Override
     public void updatePost(Long postId, PostCreateDto postCreateDto) {
         Post findPost = postRepository.findByIdCustom(postId);
         findPost.setTitle(postCreateDto.getTitle());
         findPost.setContent(postCreateDto.getContent());
-        findPost.setPostDate(LocalDateTime.now());
+
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm"));
+        findPost.setPostDate(date);
     }
 
+    //글 삭제
     @Transactional
     @Override
     public void removePost(Long postId) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String username = userDetails.getUsername();
-
         Post findPost = postRepository.findByIdCustom(postId);
-
-        if (username.equals(findPost.getMember().getName())){
-            em.remove(findPost);
-        }else{
-            //에러처리 해야되는데... 음... 나중에 구현
-            System.out.println("삭제에러,,");
-        }
-
+        em.remove(findPost);
     }
 
 

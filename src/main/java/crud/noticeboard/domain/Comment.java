@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter @Setter
@@ -24,7 +25,7 @@ public class Comment {
 
     private String text;
 
-    private LocalDateTime commentDate;
+    private String commentDate;
 
     //== 연관관계 메서드 ==//
     public void setMember(Member member){
@@ -43,7 +44,9 @@ public class Comment {
         comment.setMember(member);
         comment.setPost(post);
         comment.setText(text);
-        comment.setCommentDate(LocalDateTime.now());
+
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm"));
+        comment.setCommentDate(date);
 
         return comment;
     }

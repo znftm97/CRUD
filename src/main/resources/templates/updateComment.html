@@ -34,15 +34,15 @@
 
                 <table class="table table-striped">
                     <tbody>
-                        <tr th:each="comment : ${comments}">
-                            <td th:text="${comment.member.name}" style="float: left"></td>
-                            <td th:text="${comment.text}"></td>
-                            <td th:text="${comment.commentDate}"></td>
-                            <td class="btn-danger" th:href="@{/comment/{commentId}/remove (commentId=${comment.id})}" style="float: right">삭제</td>
-                            <td class="btn-success" th:href="@{/comment/{commentId}/update (commentId=${comment.id})}" style="float: right">수정</td>
-                        </tr>
+                    <tr th:each="comment : ${comments}">
+                        <td th:text="${comment.member.name}" style="float: left"></td>
+                        <td th:text="${comment.text}"></td>
+                        <td th:text="${comment.commentDate}" style="float: right"></td>
+                        <a class="btn-success" th:href="@{/comment/{commentId}/update (commentId=${comment.id})}">수정</a>
+                        <a class="btn-danger" th:href="@{/comment/{commentId}/remove (commentId=${comment.id})}">삭제</a>
+                    </tr>
                     </tbody>
-                 </table>
+                </table>
 
                 <nav style="text-align: center;">
                     <ul class="pagination justify-content-center"

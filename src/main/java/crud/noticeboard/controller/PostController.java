@@ -1,18 +1,22 @@
 package crud.noticeboard.controller;
 
 import crud.noticeboard.domain.Comment;
+import crud.noticeboard.domain.Member;
 import crud.noticeboard.domain.Post;
 import crud.noticeboard.dto.CommentDto;
 import crud.noticeboard.dto.PostCreateDto;
 import crud.noticeboard.repository.CommentRepository;
+import crud.noticeboard.repository.MemberRepository;
 import crud.noticeboard.repository.PostRepository;
+import crud.noticeboard.service.MemberService;
 import crud.noticeboard.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +31,8 @@ public class PostController {
     private final PostService postService;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     //글목록 페이지 매핑
     @GetMapping("/postList")
@@ -83,6 +89,14 @@ public class PostController {
     public String updatePostForm(@PathVariable("postId") Long postId, Model model){
         Post findPost = postRepository.findByIdCustom(postId);
 
+        //로그인한 사용자의 이름
+        Member loginMember = memberService.findLoginMember();
+
+        //로그인한 사용자와 글을쓴 사용자가 일치하는지
+        if( !((loginMember.getName()).equals(findPost.getMember().getName())) ){
+            return "/error/errorUpdate";
+        }
+
         PostCreateDto postCreateDto = new PostCreateDto();
         postCreateDto.setTitle(findPost.getTitle());
         postCreateDto.setContent(findPost.getContent());
@@ -108,6 +122,15 @@ public class PostController {
     //글 삭제
     @PostMapping("/post/{postId}/remove")
     public String removePost(@PathVariable("postId") Long postId){
+
+        Post findPost = postRepository.findByIdCustom(postId);
+
+        Member loginMember = memberService.findLoginMember();
+
+        if( !((loginMember.getName()).equals(findPost.getMember().getName())) ){
+            return "/error/errorDelete";
+        }
+
         postService.removePost(postId);
         return "redirect:/postList";
     }
