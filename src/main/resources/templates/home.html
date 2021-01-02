@@ -14,6 +14,9 @@
             <a class="btn btn-lg btn-secondary" sec:authorize="isAnonymous()" href="/members/new">회원 가입</a>
         </p>
         <p>
+            <a class="btn btn-lg btn-success" sec:authorize="isAuthenticated()" href="/members/info">회원정보</a>
+        </p>
+        <p>
             <a class="btn btn-lg btn-dark" sec:authorize="isAnonymous()" href="/login">로그인</a>
             <a class="btn btn-lg btn-dark" sec:authorize="isAuthenticated()" href="/logout">로그아웃</a>
         </p>

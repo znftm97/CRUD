@@ -66,7 +66,7 @@ public class PostController {
     //글 읽기 페이지 매핑
     @GetMapping("/post/{postId}/read")
     public String readPost(@PathVariable("postId") Long postId, Model model,
-                           @PageableDefault(size = 5, sort = "commentDate", direction = Sort.Direction.ASC) Pageable pageable){
+                           @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
 
         //글 조회
         Post findPost = postRepository.findByIdCustom(postId);
@@ -108,7 +108,8 @@ public class PostController {
 
     //글 수정
     @PostMapping("/post/{postId}/update")
-    public String updatePost(@ModelAttribute("PostCreateDto") @Valid PostCreateDto postCreateDto, BindingResult result, @PathVariable("postId") Long postId){
+    public String updatePost(@ModelAttribute("PostCreateDto") @Valid PostCreateDto postCreateDto,
+                             BindingResult result, @PathVariable("postId") Long postId){
         if(result.hasErrors()){
             return "/updatePost";
         }

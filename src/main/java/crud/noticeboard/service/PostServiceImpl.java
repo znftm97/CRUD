@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService{
         findPost.setTitle(postCreateDto.getTitle());
         findPost.setContent(postCreateDto.getContent());
 
-        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm"));
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm분"));
         findPost.setPostDate(date);
     }
 

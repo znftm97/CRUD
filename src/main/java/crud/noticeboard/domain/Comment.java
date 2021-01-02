@@ -45,7 +45,7 @@ public class Comment {
         comment.setPost(post);
         comment.setText(text);
 
-        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm"));
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm분"));
         comment.setCommentDate(date);
 
         return comment;

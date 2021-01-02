@@ -46,7 +46,7 @@ public class Post {
         post.setTitle(title);
         post.setContent(content);
 
-        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm"));
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm분"));
         post.setPostDate(date);
 
         return post;
