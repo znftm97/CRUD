@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class MemberController {
     @GetMapping("/members/new")
     public String createMember(Model model){
         model.addAttribute("MemberDto", new MemberDto());
-        return "/createMember";
+        return "/member/createMember";
     }
 
     //회원가입 버튼 클릭
@@ -38,7 +37,7 @@ public class MemberController {
     public String create(@ModelAttribute("MemberDto") @Valid MemberDto memberDto, BindingResult result){
 
         if(result.hasErrors()){
-            return "/createMember";
+            return "/member/createMember";
         }
 
         ModelMapper modelMapper = new ModelMapper();
@@ -59,7 +58,7 @@ public class MemberController {
 
         model.addAttribute("memberDto", memberDto);
 
-        return "/infoMember";
+        return "/member/infoMember";
     }
 
     //다시한번 비밀번호 검증
@@ -67,7 +66,7 @@ public class MemberController {
     public String updateValid(Model model){
 
         model.addAttribute("memberDto", new MemberDto());
-        return "/validUpdateMember";
+        return "/member/validUpdateMember";
     }
 
     //수정 페이지 매핑
@@ -86,7 +85,7 @@ public class MemberController {
         MemberDto memberDto2 = modelMapper.map(findMember, MemberDto.class);
 
         model.addAttribute("memberDto", memberDto2);
-        return "/updateMember";
+        return "/member/updateMember";
     }
 
     //수정
@@ -95,19 +94,15 @@ public class MemberController {
                          HttpSession session){
 
         if(result.hasErrors()){
-            return "/updateMember";
+            return "/member/updateMember";
         }
-        memberService.updateMember(memberDto);
 
-        Member findMember = memberRepository.findById(1L).get();
-        boolean matches = passwordEncoder.matches("1111", findMember.getPassword());
-        System.out.println("=============");
-        System.out.println(matches);
+        memberService.updateMember(memberDto);
 
         /*session.invalidate();*/
 
 
-        return "/infoMember";
+        return "/member/infoMember";
     }
 
     //삭제

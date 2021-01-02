@@ -6,6 +6,24 @@
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
 
     <div>
+        <div>
+            <form th:object="${PostSearchCondition}" class="form-inline" action="/posts/search">
+                <div class="form-group mx-sm-1 mb-2">
+                    <select name="searchOption">
+                        <option value="name">검색 조건 선택</option>
+                        <option value="title">글제목</option>
+                        <option value="name">글쓴이</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-2">
+                    <input type="text" id="searchWord" name="searchWord" class="form-control" placeholder="검색어"/>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">검색</button>
+
+            </form>
+        </div>
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -19,7 +37,7 @@
             <tbody>
             <tr th:each="post : ${posts}">
                 <td th:text="${post.id}"></td>
-                <td th:text="${post.member.name}"></td>
+                <td th:text="${post.name}"></td>
                 <td>
                     <a th:text="${post.title}" th:href="@{/post/{postId}/read (postId=${post.id})}" style="cursor: pointer; font-weight: bold"></a>
                 </td>

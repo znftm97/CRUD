@@ -5,6 +5,8 @@ import crud.noticeboard.domain.Member;
 import crud.noticeboard.domain.Post;
 import crud.noticeboard.dto.CommentDto;
 import crud.noticeboard.dto.PostCreateDto;
+import crud.noticeboard.dto.PostMemberSearchDto;
+import crud.noticeboard.dto.PostSearchCondition;
 import crud.noticeboard.repository.CommentRepository;
 import crud.noticeboard.repository.MemberRepository;
 import crud.noticeboard.repository.PostRepository;
@@ -15,8 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,14 +40,14 @@ public class PostController {
         Page<Post> posts = postRepository.findAll(pageable);
         model.addAttribute("posts", posts);
 
-        return "/postList";
+        return "/post/postList";
     }
 
     //글쓰기 페이지 매핑
     @GetMapping("/posts/new")
     public String postWrite(Model model){
         model.addAttribute("PostCreateDto", new PostCreateDto());
-        return "/createPost";
+        return "/post/createPost";
     }
 
     //글 생성
@@ -55,7 +55,7 @@ public class PostController {
     public String createPost(@ModelAttribute("PostCreateDto") @Valid PostCreateDto postCreateDto, BindingResult result){
 
         if(result.hasErrors()){
-            return "/createPost";
+            return "/post/createPost";
         }
 
         postService.createPost(postCreateDto.getTitle(), postCreateDto.getContent());
@@ -81,7 +81,7 @@ public class PostController {
         model.addAttribute("post", findPost);
         model.addAttribute("commentDto", new CommentDto());
         model.addAttribute("comments", comments);
-        return "/readPost";
+        return "/post/readPost";
     }
 
     //글 수정 화면 매핑
@@ -103,7 +103,7 @@ public class PostController {
 
         model.addAttribute("PostCreateDto", postCreateDto);
         model.addAttribute("postId", postId);
-        return "/updatePost";
+        return "/post/updatePost";
     }
 
     //글 수정
@@ -111,7 +111,7 @@ public class PostController {
     public String updatePost(@ModelAttribute("PostCreateDto") @Valid PostCreateDto postCreateDto,
                              BindingResult result, @PathVariable("postId") Long postId){
         if(result.hasErrors()){
-            return "/updatePost";
+            return "/post/updatePost";
         }
 
         postService.updatePost(postId, postCreateDto);
@@ -134,5 +134,26 @@ public class PostController {
 
         postService.removePost(postId);
         return "redirect:/postList";
+    }
+
+    //검색
+    @GetMapping("/posts/search")
+    public String search(@RequestParam("searchOption") String searchOption, PostSearchCondition condition,
+                         @PageableDefault(size = 5, sort = "id") Pageable pageable, Model model){
+
+        if(searchOption.equals("title")){
+            condition.setTitle(condition.getSearchWord());
+
+            Page<PostMemberSearchDto> results = postRepository.search(condition, pageable);
+            model.addAttribute("posts", results);
+        }
+        else if(searchOption.equals("name")){
+            condition.setName(condition.getSearchWord());
+
+            Page<PostMemberSearchDto> results = postRepository.search(condition, pageable);
+            model.addAttribute("posts", results);
+        }
+
+        return "/post/postListSearch";
     }
 }
