@@ -6,6 +6,8 @@ import crud.noticeboard.repository.MemberRepository;
 import crud.noticeboard.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -99,8 +101,7 @@ public class MemberController {
 
         memberService.updateMember(memberDto);
 
-        /*session.invalidate();*/
-
+        session.invalidate();
 
         return "/member/infoMember";
     }
