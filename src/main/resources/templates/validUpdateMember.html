@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <p> 비밀번호를 다시 입력해 주세요.</p>
+    <form th:object="${memberDto}" th:action="@{/members/update}" method="get">
+        <input type="password" th:field="*{password}" placeholder="비밀번호">
+        <button class="btn btn-primary">Submit</button>
+    </form>
+
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>
