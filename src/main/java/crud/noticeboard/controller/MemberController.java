@@ -110,4 +110,15 @@ public class MemberController {
         return "/infoMember";
     }
 
+    //삭제
+    @PostMapping("/members/delete")
+    public String delete(HttpSession session){
+        Member loginMember = memberService.findLoginMember();
+        memberRepository.delete(loginMember);
+
+        session.invalidate();
+
+        return "redirect:/";
+    }
+
 }

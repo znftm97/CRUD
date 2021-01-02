@@ -21,7 +21,9 @@
 
         <div class="form-row float-right">
             <a class="btn btn-primary" href="/members/update/valid">정보 수정</a>
-            <a class="btn btn-danger" href="/members/delete">회원 탈퇴</a>
+            <form th:action="@{/members/delete}" method="post">
+                <button class="btn btn-danger">회원 탈퇴</button>
+            </form>
         </div>
     </div>
 
