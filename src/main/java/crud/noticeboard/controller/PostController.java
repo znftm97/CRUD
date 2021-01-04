@@ -37,7 +37,6 @@ public class PostController {
     private final PostService postService;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-    private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final FileRepository fileRepository;
     private final FileService fileService;
@@ -69,8 +68,8 @@ public class PostController {
         }
 
         try {
-            String origFilename = files.getOriginalFilename();
-            String filename = origFilename;
+            String origFilename = files.getOriginalFilename(); // 원본 파일 명
+            String filename = origFilename + " - " + System.currentTimeMillis(); // 파일 이름 중복되지 않도록
 
             // 실행되는 위치 즉 프로젝트 폴더에 files 폴더에 파일 저장됨
             String savePath = System.getProperty("user.dir") + "\\files";

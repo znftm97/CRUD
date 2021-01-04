@@ -39,9 +39,11 @@
                 <div class="custom-file" id="inputFile">
                     <input multiple="multiple" name="file" type="file" class="custom-file-input" id="file">
                     <label class="custom-file-label" for="file">파일 선택</label>
-                    <!--<p class="custom-file-label2"></p>-->
                 </div>
             </div>
+            <p> </p>
+            <strong>파일명</strong>
+            <div class="zero" id="zero"></div>
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -53,8 +55,17 @@
 <script src="/js/bootstrap.min.js"></script>
 <script>
     $(".custom-file-input").on("change", function() {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        var files=$('input[name="file"]')[0].files;
+
+        for(var i= 0; i<files.length; i++){
+            var p = document.createElement('p');
+            var text = document.createTextNode(i+1 + ". " + files[i].name);
+            p.appendChild(text);
+
+            document.getElementById('zero').appendChild(p);
+        }
+
+
     });
 </script>
 </body>
