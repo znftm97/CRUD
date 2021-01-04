@@ -60,48 +60,50 @@ public class PostController {
     //글 생성
     @PostMapping("/posts/new")
     public String createPost(@ModelAttribute("PostCreateDto") @Valid PostCreateDto postCreateDto, BindingResult result,
-                             @RequestParam("file") MultipartFile files){
+                             @RequestParam("file") MultipartFile files[]){
 
         // 제목, 내용 비어있는지 유효성 검사
         if(result.hasErrors()){
             return "/post/createPost";
         }
 
-        try {
-            String origFilename = files.getOriginalFilename(); // 원본 파일 명
-            String filename = origFilename + " - " + System.currentTimeMillis(); // 파일 이름 중복되지 않도록
+        for(int i=0; i<files.length; i++){
+            try {
+                String origFilename = files[i].getOriginalFilename(); // 원본 파일 명
+                String filename = System.currentTimeMillis() + " - " + origFilename; // 파일 이름 중복되지 않도록
 
-            // 실행되는 위치 즉 프로젝트 폴더에 files 폴더에 파일 저장됨
-            String savePath = System.getProperty("user.dir") + "\\files";
+                // 실행되는 위치 즉 프로젝트 폴더에 files 폴더에 파일 저장됨
+                String savePath = System.getProperty("user.dir") + "\\files";
 
-            //파일 저장되는 폴더 없으면 생성
-            if (!new java.io.File(savePath).exists()) {
-                try{
-                    new java.io.File(savePath).mkdir();
+                //파일 저장되는 폴더 없으면 생성
+                if (!new java.io.File(savePath).exists()) {
+                    try{
+                        new java.io.File(savePath).mkdir();
+                    }
+                    catch(Exception e){
+                        e.getStackTrace();
+                    }
                 }
-                catch(Exception e){
-                    e.getStackTrace();
-                }
+                String filePath = savePath + "\\" + filename;
+                files[i].transferTo(new java.io.File(filePath));
+
+                FileDto fileDto = new FileDto();
+                fileDto.setOriginFilename(origFilename);
+                fileDto.setFilename(filename);
+                fileDto.setFilePath(filePath);
+
+                //파일 DB에 저장
+                fileService.saveFile(fileDto);
+            } catch(Exception e) {
+                e.printStackTrace();
             }
-            String filePath = savePath + "\\" + filename;
-            files.transferTo(new java.io.File(filePath));
-
-            FileDto fileDto = new FileDto();
-            fileDto.setOriginFilename(origFilename);
-            fileDto.setFilename(filename);
-            fileDto.setFilePath(filePath);
-
-            //파일 DB에 저장
-            fileService.saveFile(fileDto);
-
-            //DB에서 모든 파일 가져와서 Post 생성할 때 넘겨줌
-            List<File> findFiles = fileRepository.findAll();
-
-            //글 생성
-            postService.createPostWithFile(postCreateDto.getTitle(), postCreateDto.getContent(), findFiles);
-        } catch(Exception e) {
-            e.printStackTrace();
         }
+
+        //DB에서 모든 파일 가져와서 Post 생성할 때 넘겨줌
+        List<File> findFiles = fileRepository.findAll();
+
+        //글 생성
+        postService.createPostWithFile(postCreateDto.getTitle(), postCreateDto.getContent(), findFiles);
 
         return "redirect:/postList";
     }
