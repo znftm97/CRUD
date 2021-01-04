@@ -2,11 +2,11 @@ package crud.noticeboard.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,10 +22,12 @@ public class Post {
     private Member member;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    private List<Comment> comment;
+    private List<Comment> comment= new ArrayList<>();
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    private List<File> files = new ArrayList<>();
 
     private String title;
-
 
     private String content;
 
@@ -39,12 +41,33 @@ public class Post {
         member.getPost().add(this);
     }
 
+    public void setFile(List<File> files){
+        this.files = files;
+        int size = files.size();
+        for(int i=0; i<size; i++) {
+            files.get(i).setPost(this);
+        }
+    }
+
     //==생성 메서드==//
     public static Post createPost(Member member, String title, String content){
         Post post = new Post();
         post.setMember(member);
         post.setTitle(title);
         post.setContent(content);
+
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm분"));
+        post.setPostDate(date);
+
+        return post;
+    }
+
+    public static Post createPostWithFile(Member member, String title, String content, List<File> files){
+        Post post = new Post();
+        post.setMember(member);
+        post.setTitle(title);
+        post.setContent(content);
+        post.setFile(files);
 
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm분"));
         post.setPostDate(date);

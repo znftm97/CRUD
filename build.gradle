@@ -34,6 +34,8 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.0'
+	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+	compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
 }
 
 test {
