@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,43 +68,11 @@ public class PostController {
             return "/post/createPost";
         }
 
-        for(int i=0; i<files.length; i++){
-            try {
-                String origFilename = files[i].getOriginalFilename(); // 원본 파일 명
-                String filename = System.currentTimeMillis() + " - " + origFilename; // 파일 이름 중복되지 않도록
-
-                // 실행되는 위치 즉 프로젝트 폴더에 files 폴더에 파일 저장됨
-                String savePath = System.getProperty("user.dir") + "\\files";
-
-                //파일 저장되는 폴더 없으면 생성
-                if (!new java.io.File(savePath).exists()) {
-                    try{
-                        new java.io.File(savePath).mkdir();
-                    }
-                    catch(Exception e){
-                        e.getStackTrace();
-                    }
-                }
-                String filePath = savePath + "\\" + filename;
-                files[i].transferTo(new java.io.File(filePath));
-
-                FileDto fileDto = new FileDto();
-                fileDto.setOriginFilename(origFilename);
-                fileDto.setFilename(filename);
-                fileDto.setFilePath(filePath);
-
-                //파일 DB에 저장
-                fileService.saveFile(fileDto);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        //DB에서 모든 파일 가져와서 Post 생성할 때 넘겨줌
-        List<File> findFiles = fileRepository.findAll();
-
         //글 생성
-        postService.createPostWithFile(postCreateDto.getTitle(), postCreateDto.getContent(), findFiles);
+        Long postId = postService.createPost(postCreateDto.getTitle(), postCreateDto.getContent());
+
+        //파일 저장
+        fileService.saveFile(files, postId);
 
         return "redirect:/postList";
     }
@@ -123,7 +92,7 @@ public class PostController {
         Page<Comment> comments = commentRepository.findByComment(postId, pageable);
 
         //파일 조회
-        List<File> files = fileRepository.findAll();
+        List<File> files = fileRepository.findFileByPostId(postId);
 
         model.addAttribute("post", findPost);
         model.addAttribute("commentDto", new CommentDto());

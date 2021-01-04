@@ -41,33 +41,12 @@ public class Post {
         member.getPost().add(this);
     }
 
-    public void setFile(List<File> files){
-        this.files = files;
-        int size = files.size();
-        for(int i=0; i<size; i++) {
-            files.get(i).setPost(this);
-        }
-    }
-
     //==생성 메서드==//
     public static Post createPost(Member member, String title, String content){
         Post post = new Post();
         post.setMember(member);
         post.setTitle(title);
         post.setContent(content);
-
-        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm분"));
-        post.setPostDate(date);
-
-        return post;
-    }
-
-    public static Post createPostWithFile(Member member, String title, String content, List<File> files){
-        Post post = new Post();
-        post.setMember(member);
-        post.setTitle(title);
-        post.setContent(content);
-        post.setFile(files);
 
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd  hh:mm분"));
         post.setPostDate(date);

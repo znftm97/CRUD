@@ -1,9 +1,8 @@
 package crud.noticeboard.service;
 
-import crud.noticeboard.dto.FileDto;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 
-    Long saveFile(FileDto fileDto);
-    FileDto getFile(Long id);
+    void saveFile(MultipartFile files[], Long postId);
 }

@@ -24,10 +24,20 @@
             <p>----------------------------------------------------------------------------</p>
             <p> </p>
             <p th:text="${post.content}"></p>
+            <p> </p>
+            <p>----------------------------------------------------------------------------</p>
 
-            <div th:if="${files != null}">
-                <strong>첨부파일 : </strong>
-                <a th:href="@{/file/download}" th:text="${files.get(0).getFilename()}"></a>
+            <p th:if="${files != null}">
+                <p><strong>첨부파일</strong></p>
+                <table>
+                    <tbody>
+                        <tr th:each="file : ${files}">
+                            <td>
+                                <a th:href="@{/file/{fileId}/download (fileId=${file.getId()})}" th:text="${file.getFilename()}"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <!--댓글 박스-->
