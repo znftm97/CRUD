@@ -124,7 +124,6 @@ public class PostController {
         //파일 조회
         List<File> files = fileRepository.findAll();
 
-
         model.addAttribute("post", findPost);
         model.addAttribute("commentDto", new CommentDto());
         model.addAttribute("comments", comments);

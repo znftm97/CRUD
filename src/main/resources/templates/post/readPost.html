@@ -25,6 +25,11 @@
             <p> </p>
             <p th:text="${post.content}"></p>
 
+            <div th:if="${files != null}">
+                <strong>첨부파일 : </strong>
+                <a th:href="@{/file/download}" th:text="${files.get(0).getFilename()}"></a>
+            </div>
+
             <!--댓글 박스-->
             <div class="jumbotron" style="margin-top: 100px">
                 <form style="display: flex" role="form" th:action="@{/comment/{postId}/new (postId=${post.id})}" th:object="${commentDto}" method="post">
