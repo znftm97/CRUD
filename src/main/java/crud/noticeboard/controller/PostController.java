@@ -118,20 +118,26 @@ public class PostController {
         postCreateDto.setTitle(findPost.getTitle());
         postCreateDto.setContent(findPost.getContent());
 
+        List<File> files = fileRepository.findFileByPostId(postId);
+
         model.addAttribute("PostCreateDto", postCreateDto);
         model.addAttribute("postId", postId);
+        model.addAttribute("files", files);
         return "/post/updatePost";
     }
 
     //글 수정
     @PostMapping("/post/{postId}/update")
     public String updatePost(@ModelAttribute("PostCreateDto") @Valid PostCreateDto postCreateDto,
-                             BindingResult result, @PathVariable("postId") Long postId){
+                             BindingResult result, @PathVariable("postId") Long postId,
+                             @RequestParam("file") MultipartFile files[]){
         if(result.hasErrors()){
             return "/post/updatePost";
         }
 
         postService.updatePost(postId, postCreateDto);
+
+        fileService.saveFile(files, postId);
 
         return "redirect:/post/{postId}/read";
 

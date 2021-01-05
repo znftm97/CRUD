@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -54,7 +56,6 @@ public class FileServiceImpl implements FileService {
                 e.printStackTrace();
             }
         }
-
-    }
+    } // 파일저장
 
 }
